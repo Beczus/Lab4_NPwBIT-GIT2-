@@ -27,12 +27,23 @@ create_logs() {
     echo "Utworzono $COUNT plików log."
 }
 
+show_help() {
+    echo "Dostępne opcje:"
+    echo "  --date          Wyświetla dzisiejszą datę"
+    echo "  --logs          Tworzy domyślnie 100 plików log"
+    echo "  --logs LICZBA   Tworzy podaną liczbę plików log"
+    echo "  --help          Wyświetla pomoc"
+}
+
 case "$1" in
     --date)
         show_date
         ;;
     --logs)
         create_logs "$2"
+        ;;
+    --help)
+        show_help
         ;;
     *)
         echo "Nieznana opcja. Użyj: ./skrypt.sh --help"
