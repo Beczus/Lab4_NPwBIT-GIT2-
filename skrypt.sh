@@ -7,7 +7,12 @@ show_date() {
 }
 
 create_logs() {
-    COUNT=100
+    COUNT=${1:-100}
+
+    if ! [[ "$COUNT" =~ ^[0-9]+$ ]]; then
+        echo "Błąd: liczba plików musi być liczbą całkowitą."
+        exit 1
+    fi
 
     for ((i=1; i<=COUNT; i++))
     do
@@ -27,7 +32,7 @@ case "$1" in
         show_date
         ;;
     --logs)
-        create_logs
+        create_logs "$2"
         ;;
     *)
         echo "Nieznana opcja. Użyj: ./skrypt.sh --help"
