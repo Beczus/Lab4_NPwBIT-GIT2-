@@ -26,31 +26,6 @@ create_logs() {
 
     echo "Utworzono $COUNT plików log."
 }
-init_repo() {
-    REPO_URL=$(git config --get remote.origin.url)
-
-    if [ -z "$REPO_URL" ]; then
-        echo "Błąd: nie znaleziono adresu zdalnego repozytorium."
-        echo "Uruchom tę opcję wewnątrz repozytorium Git."
-        exit 1
-    fi
-
-    TARGET_DIR="repo_clone"
-
-    if [ -d "$TARGET_DIR" ]; then
-        TARGET_DIR="repo_clone_$(date +%s)"
-    fi
-
-    git clone "$REPO_URL" "$TARGET_DIR"
-
-    FULL_PATH="$(pwd)/$TARGET_DIR"
-
-    echo "export PATH=\"\$PATH:$FULL_PATH\"" >> ~/.bashrc
-
-    echo "Repozytorium sklonowano do: $FULL_PATH"
-    echo "Ścieżkę dodano do PATH w pliku ~/.bashrc"
-    echo "Aby odświeżyć PATH, wykonaj: source ~/.bashrc"
-}
 
 create_errors() {
     COUNT=${1:-100}
@@ -78,13 +53,43 @@ create_errors() {
     echo "Utworzono $COUNT katalogów error z plikami error."
 }
 
+init_repo() {
+    REPO_URL=$(git config --get remote.origin.url)
+
+    if [ -z "$REPO_URL" ]; then
+        echo "Błąd: nie znaleziono adresu zdalnego repozytorium."
+        echo "Uruchom tę opcję wewnątrz repozytorium Git."
+        exit 1
+    fi
+
+    TARGET_DIR="repo_clone"
+
+    if [ -d "$TARGET_DIR" ]; then
+        TARGET_DIR="repo_clone_$(date +%s)"
+    fi
+
+    git clone "$REPO_URL" "$TARGET_DIR"
+
+    FULL_PATH="$(pwd)/$TARGET_DIR"
+
+    echo "export PATH=\"\$PATH:$FULL_PATH\"" >> ~/.bashrc
+
+    echo "Repozytorium sklonowano do: $FULL_PATH"
+    echo "Ścieżkę dodano do PATH w pliku ~/.bashrc"
+    echo "Aby odświeżyć PATH, wykonaj: source ~/.bashrc"
+}
+
 show_help() {
     echo "Dostępne opcje:"
-    echo "  --date, -d          Wyświetla dzisiejszą datę"
-    echo "  --logs, -l          Tworzy domyślnie 100 plików log"
-    echo "  --logs LICZBA       Tworzy podaną liczbę plików log"
-    echo "  -l LICZBA           Tworzy podaną liczbę plików log"
-    echo "  --help, -h          Wyświetla pomoc"
+    echo "  --date, -d             Wyświetla dzisiejszą datę"
+    echo "  --logs, -l             Tworzy domyślnie 100 plików log"
+    echo "  --logs LICZBA          Tworzy podaną liczbę plików log"
+    echo "  -l LICZBA              Tworzy podaną liczbę plików log"
+    echo "  --error, -e            Tworzy domyślnie 100 katalogów error z plikami error"
+    echo "  --error LICZBA         Tworzy podaną liczbę katalogów error z plikami error"
+    echo "  -e LICZBA              Tworzy podaną liczbę katalogów error z plikami error"
+    echo "  --init                 Klonuje repozytorium i dodaje jego katalog do PATH"
+    echo "  --help, -h             Wyświetla pomoc"
 }
 
 case "$1" in
@@ -94,14 +99,14 @@ case "$1" in
     --logs|-l)
         create_logs "$2"
         ;;
-    --help|-h)
-        show_help
+    --error|-e)
+        create_errors "$2"
         ;;
     --init)
         init_repo
         ;;
-    --error|-e)
-        create_errors "$2"
+    --help|-h)
+        show_help
         ;;
     *)
         echo "Nieznana opcja. Użyj: ./skrypt.sh --help"
