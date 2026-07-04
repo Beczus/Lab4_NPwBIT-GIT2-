@@ -36,13 +36,13 @@ show_help() {
 }
 
 case "$1" in
-    --date)
+    --date|-d)
         show_date
         ;;
-    --logs)
+    --logs|-l)
         create_logs "$2"
         ;;
-    --help)
+    --help|-h)
         show_help
         ;;
     *)
