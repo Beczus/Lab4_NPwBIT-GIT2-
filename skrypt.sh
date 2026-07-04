@@ -52,6 +52,32 @@ init_repo() {
     echo "Aby odświeżyć PATH, wykonaj: source ~/.bashrc"
 }
 
+create_errors() {
+    COUNT=${1:-100}
+
+    if ! [[ "$COUNT" =~ ^[0-9]+$ ]]; then
+        echo "Błąd: liczba plików musi być liczbą całkowitą."
+        exit 1
+    fi
+
+    for ((i=1; i<=COUNT; i++))
+    do
+        DIR_NAME="error${i}"
+        FILE_NAME="${DIR_NAME}/error${i}.txt"
+
+        mkdir -p "$DIR_NAME"
+
+        {
+            echo "Nazwa pliku: error${i}.txt"
+            echo "Katalog: $DIR_NAME"
+            echo "Utworzony przez skrypt: $SCRIPT_NAME"
+            echo "Data utworzenia: $(date +"%Y-%m-%d %H:%M:%S")"
+        } > "$FILE_NAME"
+    done
+
+    echo "Utworzono $COUNT katalogów error z plikami error."
+}
+
 show_help() {
     echo "Dostępne opcje:"
     echo "  --date          Wyświetla dzisiejszą datę"
@@ -72,6 +98,9 @@ case "$1" in
         ;;
     --init)
         init_repo
+        ;;
+    --error|-e)
+        create_errors "$2"
         ;;
     *)
         echo "Nieznana opcja. Użyj: ./skrypt.sh --help"
