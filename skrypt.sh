@@ -80,10 +80,11 @@ create_errors() {
 
 show_help() {
     echo "Dostępne opcje:"
-    echo "  --date          Wyświetla dzisiejszą datę"
-    echo "  --logs          Tworzy domyślnie 100 plików log"
-    echo "  --logs LICZBA   Tworzy podaną liczbę plików log"
-    echo "  --help          Wyświetla pomoc"
+    echo "  --date, -d          Wyświetla dzisiejszą datę"
+    echo "  --logs, -l          Tworzy domyślnie 100 plików log"
+    echo "  --logs LICZBA       Tworzy podaną liczbę plików log"
+    echo "  -l LICZBA           Tworzy podaną liczbę plików log"
+    echo "  --help, -h          Wyświetla pomoc"
 }
 
 case "$1" in
